@@ -1,8 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bandit Offchain API Tester
+
+A web-based tool for testing and configuring off-chain REST API tasks for the Bandit Network. This tool helps campaign creators validate their API endpoints and verification logic before creating tasks.
+
+## Features
+
+- Test API endpoints with different wallet addresses
+- Support for multiple authentication methods:
+  - No Authentication
+  - Basic Auth
+  - Bearer Token
+  - API Key (header or query parameter)
+- Real-time verification logic validation
+- Preview complete API URLs
+- View formatted API responses
+- Copy-ready verification functions for task configuration
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +35,38 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Enter your API endpoint
+2. Input a wallet address for testing
+3. Add your verification logic
+4. Configure authentication if required
+5. Click "Test API" to validate
+6. View the API response and verification results
+7. Copy the formatted verification function for your task configuration
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js](https://nextjs.org/) - React framework
+- [Shadcn/UI](https://ui.shadcn.com/) - UI components
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- TypeScript - Type safety
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The project uses the following structure:
+- `/src/app/page.tsx` - Main application component
+- `/src/app/api/test/route.ts` - API route for testing endpoints
+- `/src/types/auth.ts` - Authentication type definitions
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
