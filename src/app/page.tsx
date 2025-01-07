@@ -51,23 +51,42 @@ export default function Home() {
     setLoading(true)
 
     try {
-      const updatedBody = {
-        apiUrl,
-        walletAddress,
-        verificationExpression,
-        auth: authConfig
+      // Make the API call directly from the client
+      const url = new URL(apiUrl)
+      url.searchParams.append('walletAddress', walletAddress)
+
+      // Add auth headers
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
       }
 
-      const response = await fetch('/api/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedBody),
-      })
+      switch (authConfig.type) {
+        case 'basic':
+          headers['Authorization'] = `Basic ${btoa(`${authConfig.username}:${authConfig.password}`)}`
+          break
+        case 'bearer':
+          headers['Authorization'] = `Bearer ${authConfig.token}`
+          break
+        case 'apiKey':
+          if (authConfig.inHeader) {
+            headers[authConfig.headerKey || ''] = authConfig.apiKey || ''
+          }
+          break
+      }
 
+      const response = await fetch(url.toString(), { headers })
       const data = await response.json()
-      setResult(data)
+
+      // Evaluate the verification expression
+      const verifyFunction = new Function('response', verificationExpression)
+      const isValid = verifyFunction(data)
+
+      setResult({
+        success: true,
+        data,
+        isValid,
+        status: isValid === 1 ? 'VALID ✅' : 'INVALID ❌'
+      })
     } catch (error) {
       console.error('Error:', error)
       setResult({ success: false, error: 'Failed to test API' })
