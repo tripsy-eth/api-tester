@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { AuthType, AuthConfig } from '@/types/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -81,9 +81,8 @@ export default function Home() {
     return `function (response) {\n  ${verificationExpression.trim()}\n}`;
   };
 
-  const testExpression = () => {
+  const testExpression = useCallback(() => {
     try {
-      // Test cases to verify the expression works correctly
       const testCases: TestCase[] = [
         { response: { status: true, data: 1 }, expectedResult: 1 },
         { response: { status: false, data: 1 }, expectedResult: 0 },
@@ -91,21 +90,20 @@ export default function Home() {
       ];
 
       const testFunction = new Function('response', verificationExpression);
-
       const allTestsPassed = testCases.every(test =>
         testFunction(test.response) === test.expectedResult
       );
 
       setIsExpressionValid(allTestsPassed);
-    } catch (error) {
+    } catch {
       setIsExpressionValid(false);
     }
-  };
+  }, [verificationExpression]);
 
   // Add to useEffect or wherever appropriate
   useEffect(() => {
     testExpression();
-  }, [verificationExpression]);
+  }, [verificationExpression, testExpression]);
 
   const getCompleteUrl = (baseUrl: string, walletAddress: string, auth: AuthConfig) => {
     if (!baseUrl || !walletAddress) return '';
@@ -145,8 +143,8 @@ export default function Home() {
               <li>Get the properly formatted expression for your task configuration</li>
             </ul>
             <p className="text-sm text-muted-foreground">
-              Once you've confirmed your API and expression are working correctly, you can copy the verified expression
-              to use in your campaign's task configuration.
+              Once you&apos;ve confirmed your API and expression are working correctly, you can copy the verified expression
+              to use in your campaign&apos;s task configuration.
             </p>
           </CardContent>
         </Card>
